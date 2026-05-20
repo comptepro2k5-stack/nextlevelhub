@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Espace membre - Next Level Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: #ffffff;
+        background:
+          radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.9), transparent 30%),
+          linear-gradient(135deg, #303030, #000000 58%, #d7d7d7);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .dashboard {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .dashboard-card {
+        width: min(100%, 720px);
+        border: 1px solid rgba(255, 255, 255, 0.36);
+        border-radius: 34px;
+        padding: 30px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.42));
+        box-shadow: 0 34px 90px rgba(0, 0, 0, 0.54);
+        backdrop-filter: blur(22px);
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(34px, 7vw, 58px);
+        letter-spacing: -0.07em;
+        line-height: 0.95;
+      }
+
+      p {
+        margin: 0 0 22px;
+        color: rgba(255, 255, 255, 0.72);
+        line-height: 1.55;
+      }
+
+      .session-box {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 20px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.82);
+        overflow-wrap: anywhere;
+      }
+
+      .logout-button {
+        min-height: 50px;
+        margin-top: 22px;
+        border: 1px solid rgba(0, 148, 255, 0.82);
+        border-radius: 18px;
+        padding: 0 22px;
+        cursor: pointer;
+        color: #ffffff;
+        font-weight: 850;
+        background: linear-gradient(145deg, rgba(0, 148, 255, 0.82), rgba(0, 0, 0, 0.42));
+      }
+    </style>
+  </head>
+  <body>
+    <main class="dashboard">
+      <section class="dashboard-card">
+        <h1>Espace membre</h1>
+        <p>Tu es connecte a Next Level Hub. Cette page est protegee par Supabase Auth.</p>
+        <div class="session-box" id="session-box">Chargement de la session...</div>
+        <button class="logout-button" id="logout-button" type="button">Se deconnecter</button>
+      </section>
+    </main>
+
+    <script type="module">
+      import {
+        LOGIN_URL,
+        createSupabaseClient,
+        isSupabaseConfigured
+      } from "./supabase-config.js?v=2";
+
+      const sessionBox = document.querySelector("#session-box");
+      const logoutButton = document.querySelector("#logout-button");
+
+      if (!isSupabaseConfigured()) {
+        sessionBox.textContent = "Configuration Supabase manquante.";
+        logoutButton.disabled = true;
+      } else {
+        const supabase = createSupabaseClient();
+        const { data } = await supabase.auth.getSession();
+
+        if (!data.session) {
+          window.location.href = LOGIN_URL;
+        } else {
+          sessionBox.textContent = data.session.user.email || data.session.user.id;
+        }
+
+        logoutButton.addEventListener("click", async () => {
+          await supabase.auth.signOut();
+          window.location.href = LOGIN_URL;
+        });
+      }
+    </script>
+  </body>
+</html>

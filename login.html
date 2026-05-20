@@ -8,6 +8,7 @@
       content="Connexion membre Next Level Hub avec Google ou adresse email."
     />
     <title>Connexion - Next Level Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
       :root {
@@ -274,6 +275,38 @@
         font-weight: 800;
       }
 
+      .auth-status {
+        display: none;
+        margin: 18px 0 0;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 16px;
+        padding: 13px 14px;
+        color: rgba(255, 255, 255, 0.82);
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .auth-status--visible {
+        display: block;
+      }
+
+      .auth-status--error {
+        border-color: rgba(255, 105, 105, 0.55);
+        background: rgba(255, 64, 64, 0.12);
+      }
+
+      .auth-status--success {
+        border-color: rgba(0, 148, 255, 0.72);
+        background: rgba(0, 148, 255, 0.14);
+      }
+
+      .google-button:disabled,
+      .email-form__submit:disabled {
+        cursor: not-allowed;
+        opacity: 0.62;
+      }
+
       @media (max-width: 520px) {
         .auth-shell {
           padding: 16px;
@@ -313,16 +346,16 @@
         </header>
 
         <div class="auth-options">
-          <a class="google-button" href="/auth/google" aria-label="Continuer avec Google">
+          <button class="google-button" id="google-login" type="button" aria-label="Continuer avec Google">
             <span class="google-button__icon" aria-hidden="true">G</span>
             <span>Continuer avec Google</span>
-          </a>
+          </button>
 
           <div class="auth-divider" role="separator" aria-label="ou">
             <span>ou</span>
           </div>
 
-          <form class="email-form" action="/auth/email" method="post">
+          <form class="email-form" id="email-login">
             <label class="email-form__label" for="email">Adresse email</label>
             <input
               class="email-form__input"
@@ -337,11 +370,104 @@
           </form>
         </div>
 
+        <p class="auth-status" id="auth-status" role="status" aria-live="polite"></p>
+
         <footer class="auth-footer">
           <span>Pas encore membre ?</span>
           <a class="auth-footer__link" href="index.html">Découvrir Next Level Hub</a>
         </footer>
       </section>
     </main>
+
+    <script type="module">
+      import {
+        AUTH_REDIRECT_URL,
+        DASHBOARD_URL,
+        createSupabaseClient,
+        isSupabaseConfigured
+      } from "./supabase-config.js?v=2";
+
+      const statusEl = document.querySelector("#auth-status");
+      const googleButton = document.querySelector("#google-login");
+      const emailForm = document.querySelector("#email-login");
+      const emailInput = document.querySelector("#email");
+      const submitButton = emailForm.querySelector("button[type='submit']");
+
+      function setStatus(message, type = "info") {
+        statusEl.textContent = message;
+        statusEl.className = `auth-status auth-status--visible auth-status--${type}`;
+      }
+
+      function setLoading(isLoading) {
+        googleButton.disabled = isLoading;
+        submitButton.disabled = isLoading;
+      }
+
+      if (!isSupabaseConfigured()) {
+        setStatus(
+          "Configuration Supabase manquante : renseigne SUPABASE_URL et SUPABASE_ANON_KEY dans supabase-config.js.",
+          "error"
+        );
+        setLoading(true);
+      } else {
+        const supabase = createSupabaseClient();
+
+        const { data } = await supabase.auth.getSession();
+        if (data.session) {
+          window.location.href = DASHBOARD_URL;
+        }
+
+        googleButton.addEventListener("click", async () => {
+          setLoading(true);
+          setStatus("Redirection vers Google...", "info");
+
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+              redirectTo: AUTH_REDIRECT_URL,
+              queryParams: {
+                access_type: "offline",
+                prompt: "consent"
+              }
+            }
+          });
+
+          if (error) {
+            setLoading(false);
+            setStatus(error.message, "error");
+          }
+        });
+
+        emailForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const email = emailInput.value.trim();
+
+          if (!email) {
+            setStatus("Entre ton adresse email pour recevoir le lien magique.", "error");
+            return;
+          }
+
+          setLoading(true);
+          setStatus("Envoi du lien magique...", "info");
+
+          const { error } = await supabase.auth.signInWithOtp({
+            email,
+            options: {
+              emailRedirectTo: AUTH_REDIRECT_URL
+            }
+          });
+
+          setLoading(false);
+
+          if (error) {
+            setStatus(error.message, "error");
+            return;
+          }
+
+          setStatus("Lien envoye. Verifie ta boite email pour te connecter.", "success");
+          emailForm.reset();
+        });
+      }
+    </script>
   </body>
 </html>
