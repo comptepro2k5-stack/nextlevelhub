@@ -1,13 +1,10 @@
 const SUPABASE_URL = "https://cztzuoyuusyyngogspvu.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dHp1b3l1dXN5eW5nb2dzcHZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyNzk1OTYsImV4cCI6MjA5NDg1NTU5Nn0.Hx__HK5BJJAfjHv7BpOIdgatXaTgt-nzeSHoUH3PL6c";
 const PRODUCTION_ORIGIN = "https://nextlevelhub.vercel.app";
-const LOCAL_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000", "http://192.168.1.165:8000"];
 
-const APP_ORIGIN = LOCAL_ORIGINS.includes(window.location.origin) ? window.location.origin : PRODUCTION_ORIGIN;
-
-export const AUTH_REDIRECT_URL = `${APP_ORIGIN}/auth-callback.html`;
-export const DASHBOARD_URL = `${APP_ORIGIN}/dashboard.html`;
-export const LOGIN_URL = `${APP_ORIGIN}/login.html`;
+export const AUTH_REDIRECT_URL = `${PRODUCTION_ORIGIN}/auth-callback.html`;
+export const DASHBOARD_URL = `${PRODUCTION_ORIGIN}/dashboard.html`;
+export const LOGIN_URL = `${PRODUCTION_ORIGIN}/login.html`;
 
 export function isSupabaseConfigured() {
   return (
