@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Centre de ressources Nexaform pour créer, vendre et développer des formations digitales premium avec une communauté privée."
+    />
+    <meta name="robots" content="index, follow" />
+    <title>Nexaform Resources</title>
+
+    <style>
+      :root {
+        --page-bg: #252b2f;
+        --surface: #ffffff;
+        --text: #111827;
+        --muted: #4b5563;
+        --subtle: #6b7280;
+        --line: #e5e7eb;
+        --blue: #2563eb;
+        --blue-soft: #e8f0ff;
+        --yellow: #ffc400;
+        --pink: #ff6fae;
+        --purple: #6d5dfc;
+        --cyan: #40c8f4;
+        --green: #27c47d;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--page-bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .resource-page {
+        width: min(100%, 860px);
+        min-height: 100vh;
+        margin: 0 auto;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .resource-page__inner {
+        padding: 30px 32px 42px;
+      }
+
+      .page-header {
+        margin-bottom: 52px;
+      }
+
+      .page-header__title {
+        margin: 0 0 10px;
+        font-size: clamp(28px, 4vw, 38px);
+        font-weight: 760;
+        letter-spacing: -0.02em;
+      }
+
+      .page-header__description {
+        max-width: 720px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .quick-action {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 44px;
+        margin-top: 54px;
+        border-left: 3px solid var(--blue);
+        background: var(--blue-soft);
+        padding: 10px 14px;
+      }
+
+      .quick-action__icon {
+        display: grid;
+        width: 18px;
+        height: 18px;
+        place-items: center;
+        border: 1px solid var(--blue);
+        border-radius: 50%;
+        color: var(--blue);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .quick-action__title {
+        display: block;
+        color: #1f2937;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .quick-action__text {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .section {
+        margin-top: 54px;
+      }
+
+      .section__title {
+        margin: 0 0 22px;
+        font-size: 14px;
+        font-weight: 760;
+      }
+
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 38px 32px;
+      }
+
+      .resource-card {
+        min-width: 0;
+      }
+
+      .resource-card__media {
+        position: relative;
+        display: flex;
+        min-height: 138px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 12px;
+        background: var(--yellow);
+      }
+
+      .resource-card__media--soft {
+        background: #f3f4f6;
+      }
+
+      .resource-card__media--blue {
+        background: #46c7ee;
+      }
+
+      .resource-card__media--pink {
+        background: #ffe9ef;
+      }
+
+      .resource-card__title {
+        display: inline-block;
+        margin-bottom: 5px;
+        color: var(--blue);
+        font-size: 11px;
+        font-weight: 750;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .resource-card__description {
+        margin: 0;
+        color: #374151;
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      .mock-window {
+        width: 78%;
+        min-height: 96px;
+        border: 2px solid #111827;
+        background: #f9fafb;
+        box-shadow: 8px 8px 0 rgba(17, 24, 39, 0.16);
+      }
+
+      .mock-window__bar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+        padding: 8px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .mock-window__dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #111827;
+        opacity: 0.7;
+      }
+
+      .mock-window__body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 14px;
+      }
+
+      .mock-window__panel {
+        min-height: 42px;
+        border: 1px solid var(--line);
+        background: #ffffff;
+      }
+
+      .mock-flow {
+        display: grid;
+        width: 78%;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .mock-flow__item {
+        min-height: 34px;
+        border: 2px solid var(--purple);
+        background: #ffeeda;
+        box-shadow: 5px 5px 0 var(--pink);
+      }
+
+      .mock-chart {
+        position: relative;
+        width: 78%;
+        height: 96px;
+        border-bottom: 2px solid #111827;
+        border-left: 2px solid #111827;
+      }
+
+      .mock-chart__bar {
+        position: absolute;
+        bottom: 0;
+        width: 14%;
+        border: 2px solid #111827;
+        background: var(--pink);
+      }
+
+      .mock-chart__bar:nth-child(1) {
+        left: 10%;
+        height: 28%;
+        background: #ffe67a;
+      }
+
+      .mock-chart__bar:nth-child(2) {
+        left: 30%;
+        height: 46%;
+        background: var(--pink);
+      }
+
+      .mock-chart__bar:nth-child(3) {
+        left: 50%;
+        height: 72%;
+        background: var(--purple);
+      }
+
+      .mock-chart__bar:nth-child(4) {
+        left: 70%;
+        height: 94%;
+        background: #ffffff;
+      }
+
+      .mock-screenshot {
+        width: 86%;
+        min-height: 106px;
+        border: 2px solid #6b7280;
+        background:
+          linear-gradient(#9ca3af 0 18px, transparent 18px),
+          linear-gradient(90deg, #d1d5db 0 28%, #f9fafb 28% 100%);
+        padding-top: 32px;
+      }
+
+      .mock-modal {
+        width: 44%;
+        min-height: 58px;
+        margin: 0 auto;
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+        box-shadow: 0 12px 20px rgba(17, 24, 39, 0.18);
+      }
+
+      .mock-mascot {
+        position: relative;
+        width: 122px;
+        height: 106px;
+      }
+
+      .mock-mascot::before {
+        position: absolute;
+        inset: 14px 32px 0 8px;
+        border-radius: 56% 44% 50% 50%;
+        background: var(--purple);
+        content: "";
+      }
+
+      .mock-mascot::after {
+        position: absolute;
+        right: 8px;
+        bottom: 6px;
+        color: #111827;
+        content: "Ag";
+        font-size: 54px;
+        font-weight: 850;
+        letter-spacing: -0.06em;
+      }
+
+      .mock-feed {
+        display: flex;
+        width: 86%;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+
+      .mock-feed__node {
+        display: grid;
+        width: 58px;
+        height: 58px;
+        place-items: center;
+        border-radius: 50%;
+        background: #f9fafb;
+        color: var(--blue);
+        font-size: 8px;
+        font-weight: 700;
+        box-shadow: -8px 0 0 rgba(37, 99, 235, 0.35);
+      }
+
+      .plugin-preview {
+        width: 100%;
+        height: 100%;
+        padding: 14px;
+      }
+
+      .plugin-preview--grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 7px;
+      }
+
+      .plugin-preview__tile {
+        min-height: 42px;
+        background: linear-gradient(135deg, #111827, #6b7280);
+      }
+
+      .plugin-preview__tile:nth-child(2),
+      .plugin-preview__tile:nth-child(5) {
+        background: linear-gradient(135deg, #f59e0b, #ffffff);
+      }
+
+      .plugin-preview--browser {
+        display: grid;
+        grid-template-columns: 0.75fr 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .plugin-preview__panel {
+        min-height: 82px;
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+        box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.08);
+      }
+
+      .plugin-preview--remover {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        align-items: center;
+      }
+
+      .plugin-preview__cutout {
+        min-height: 84px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #ffffff, #f7d9ff);
+      }
+
+      .plugin-preview--dark {
+        background: radial-gradient(circle at 20% 20%, #22d3ee, transparent 24%),
+          radial-gradient(circle at 70% 40%, #8b5cf6, transparent 28%),
+          #111827;
+      }
+
+      .plugin-preview__card {
+        width: 48%;
+        min-height: 92px;
+        margin-left: auto;
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+      }
+
+      .plugin-preview--form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .plugin-preview__form {
+        width: 76%;
+        min-height: 94px;
+        border: 1px solid #dbeafe;
+        background: #ffffff;
+        box-shadow: 7px 7px 0 rgba(37, 99, 235, 0.18);
+      }
+
+      .plugin-preview--table {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .plugin-preview__table-title {
+        color: #111827;
+        font-size: 24px;
+        font-weight: 850;
+        line-height: 0.95;
+      }
+
+      .plugin-preview__table-ui {
+        min-height: 92px;
+        border: 1px solid #fecdd3;
+        background: #ffffff;
+      }
+
+      .page-note {
+        margin: 54px 0 0;
+        color: #374151;
+        font-size: 11px;
+      }
+
+      @media (max-width: 720px) {
+        .resource-page {
+          width: 100%;
+        }
+
+        .resource-page__inner {
+          padding: 24px 20px 34px;
+        }
+
+        .page-header {
+          margin-bottom: 38px;
+        }
+
+        .quick-action {
+          margin-top: 36px;
+        }
+
+        .section {
+          margin-top: 42px;
+        }
+
+        .resource-grid {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+
+        .resource-card__media {
+          min-height: 190px;
+        }
+      }
+
+      @media (min-width: 721px) and (max-width: 920px) {
+        .resource-page {
+          width: calc(100% - 40px);
+        }
+
+        .resource-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="resource-page" aria-labelledby="page-title">
+      <div class="resource-page__inner">
+        <!-- Page Header -->
+        <header class="page-header">
+          <h1 class="page-header__title" id="page-title">Resources</h1>
+          <p class="page-header__description">
+            We gathered premium tutorials, templates, and platform guides to help you launch faster, sell smarter, and
+            build a thriving paid learning community.
+          </p>
+
+          <a class="quick-action" href="#tutorials" aria-label="Ouvrir les ressources recommandées">
+            <span class="quick-action__icon" aria-hidden="true">i</span>
+            <span class="quick-action__content">
+              <span class="quick-action__title">Open Link</span>
+              <span class="quick-action__text">Click the underlined links to open each resource.</span>
+            </span>
+          </a>
+        </header>
+
+        <!-- Tutorials And Guides -->
+        <section class="section" id="tutorials" aria-labelledby="tutorials-title">
+          <h2 class="section__title" id="tutorials-title">Tutorials &amp; Guides</h2>
+
+          <div class="resource-grid">
+            <article class="resource-card">
+              <div class="resource-card__media" aria-hidden="true">
+                <div class="mock-window">
+                  <div class="mock-window__bar">
+                    <span class="mock-window__dot"></span>
+                    <span class="mock-window__dot"></span>
+                    <span class="mock-window__dot"></span>
+                  </div>
+                  <div class="mock-window__body">
+                    <div class="mock-window__panel"></div>
+                    <div class="mock-window__panel"></div>
+                  </div>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/guides/launch-properties">Explore auto layout properties</a>
+              <p class="resource-card__description">
+                Discover the structure used to create responsive sales pages that stay clean on every screen.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media" aria-hidden="true">
+                <div class="mock-flow">
+                  <span class="mock-flow__item"></span>
+                  <span class="mock-flow__item"></span>
+                  <span class="mock-flow__item"></span>
+                  <span class="mock-flow__item"></span>
+                  <span class="mock-flow__item"></span>
+                  <span class="mock-flow__item"></span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/guides/create-variants">Create and Use Variants</a>
+              <p class="resource-card__description">
+                Variant systems help you organize course cards, pricing states, testimonials, and checkout modules.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media" aria-hidden="true">
+                <div class="mock-chart">
+                  <span class="mock-chart__bar"></span>
+                  <span class="mock-chart__bar"></span>
+                  <span class="mock-chart__bar"></span>
+                  <span class="mock-chart__bar"></span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/guides/first-best-practices">Figma Best Practices</a>
+              <p class="resource-card__description">
+                Drive deep clarity with good naming, spacing, layout rules, and conversion-focused components.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media" aria-hidden="true">
+                <div class="mock-screenshot">
+                  <div class="mock-modal"></div>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/guides/developer-handoff">Figma for Engineers (4 parts)</a>
+              <p class="resource-card__description">
+                Learn the basics of developer handoff for pages, pricing tables, dashboards, and community feeds.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media" aria-hidden="true">
+                <div class="mock-mascot"></div>
+              </div>
+              <a class="resource-card__title" href="/guides/learn-design">Learn Design</a>
+              <p class="resource-card__description">
+                Want to get started in design, but do not know where to begin? These lessons help immediately.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media" aria-hidden="true">
+                <div class="mock-feed">
+                  <span class="mock-feed__node">Course</span>
+                  <span class="mock-feed__node">Chat</span>
+                  <span class="mock-feed__node">Live</span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/community">Nexaform Community</a>
+              <p class="resource-card__description">
+                Discover resources, playbooks, creator stories, and weekly prompts from the Nexaform community.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Recommended Plugins -->
+        <section class="section" aria-labelledby="plugins-title">
+          <h2 class="section__title" id="plugins-title">Recommended Plugins</h2>
+
+          <div class="resource-grid">
+            <article class="resource-card">
+              <div class="resource-card__media resource-card__media--soft" aria-hidden="true">
+                <div class="plugin-preview plugin-preview--grid">
+                  <span class="plugin-preview__tile"></span>
+                  <span class="plugin-preview__tile"></span>
+                  <span class="plugin-preview__tile"></span>
+                  <span class="plugin-preview__tile"></span>
+                  <span class="plugin-preview__tile"></span>
+                  <span class="plugin-preview__tile"></span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/plugins/pexels">Pexels - Free Images</a>
+              <p class="resource-card__description">
+                Add high-quality course images, creator portraits, and marketplace covers for professional pages.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media resource-card__media--soft" aria-hidden="true">
+                <div class="plugin-preview plugin-preview--browser">
+                  <span class="plugin-preview__panel"></span>
+                  <span class="plugin-preview__panel"></span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/plugins/unsplash">Unsplash - Free Images</a>
+              <p class="resource-card__description">
+                Insert beautiful visuals into your sales pages, community banners, and learning dashboards.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media resource-card__media--soft" aria-hidden="true">
+                <div class="plugin-preview plugin-preview--remover">
+                  <span class="plugin-preview__cutout"></span>
+                  <span class="plugin-preview__cutout"></span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/plugins/background-remover">Icons8 Background Remover</a>
+              <p class="resource-card__description">
+                Remove backgrounds from avatars and product images to build cleaner premium creator pages.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media resource-card__media--soft" aria-hidden="true">
+                <div class="plugin-preview plugin-preview--dark">
+                  <div class="plugin-preview__card"></div>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/plugins/content-reel">Content Reel</a>
+              <p class="resource-card__description">
+                Design layouts faster by filling cards, testimonials, and feeds with realistic content.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media resource-card__media--blue" aria-hidden="true">
+                <div class="plugin-preview plugin-preview--form">
+                  <span class="plugin-preview__form"></span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/plugins/lorem-ipsum">Lorem Ipsum</a>
+              <p class="resource-card__description">
+                Generate placeholder copy for sales pages, checkout steps, FAQs, and onboarding screens.
+              </p>
+            </article>
+
+            <article class="resource-card">
+              <div class="resource-card__media resource-card__media--pink" aria-hidden="true">
+                <div class="plugin-preview plugin-preview--table">
+                  <span class="plugin-preview__table-title">Table<br />Creator</span>
+                  <span class="plugin-preview__table-ui"></span>
+                </div>
+              </div>
+              <a class="resource-card__title" href="/plugins/table-creator">Table Creator</a>
+              <p class="resource-card__description">
+                Create comparison tables for pricing plans, course modules, and feature matrices quickly.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Footer Note -->
+        <footer class="page-note" aria-label="Note de bas de page">
+          <p>
+            PS: Do not limit yourself to these resources. For product, design, and creator-growth questions, search the
+            Nexaform knowledge base or join the community forum.
+          </p>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>
